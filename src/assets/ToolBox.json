@@ -1,0 +1,27 @@
+[
+  {
+    "name": "PlayerStart"
+  }, {
+    "name": "LevelExit"
+  }, {
+    "name": "Treasure",
+    "config": {
+      "index": 0
+    }
+  }, {
+    "name": "Dwarf",
+    "config": {
+      "index": 0
+    }
+  }, {
+    "name": "TargetPoint",
+    "config": {
+      "dwarf": 0,
+      "index": 0
+    }
+  }, {
+    "name": "Voxel"
+  }, {
+    "name": "Void"
+  }
+]
