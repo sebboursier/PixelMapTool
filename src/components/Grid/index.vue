@@ -2,7 +2,7 @@
   <svg preserveAspectRatio="xMinYMin meet" :viewBox="viewBox" @mousedown="actionStart" @mousemove="action" @mouseup="actionEnd" ref="grid">
 
     <defs>
-        <rect v-for="(tool, index) in tools" :key="index" :id="tool.name" :width="RECT_SIZE + 1" :height="RECT_SIZE + 1" :class="tool.name"/>
+        <rect v-for="(tool, index) in tools" :key="index" :id="tool.name" :width="RECT_SIZE" :height="RECT_SIZE" :class="tool.name"/>
     </defs>
 
     <g v-for="(line, y) in map" :key="y">
@@ -39,7 +39,11 @@ export default {
       return '0 0 ' + this.size * this.RECT_SIZE + ' ' + this.size * this.RECT_SIZE
     },
     clonedSelected () {
-      return _.cloneDeep(this.toolSelected)
+      const cloned = _.cloneDeep(this.toolSelected)
+      return {
+        name: cloned.name,
+        config: cloned.config
+      }
     }
   },
   methods: {

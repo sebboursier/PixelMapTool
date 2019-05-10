@@ -7,17 +7,35 @@
     </div>
     <ul class="card-image collection">
       <template v-for="(tool, index) in tools">
+
         <li class="collection-item" :key="index" @click="setToolSelected(tool)" :class="toolSelected && tool.name === toolSelected.name ? 'active' : ''">
           {{tool.name}}
         </li>
-        <li v-if="toolSelected && tool.name === toolSelected.name" :key="-index" class="container">
-          <article class="row" v-for="(value, item) in toolSelected.config" :key="item">
-            <div class="input-field col s12">
-              <input :id="item" type="text" class="validate" v-model="toolSelected.config[item]">
-              <label :for="item" class="active">{{item}}</label>
-            </div>
-          </article>
+
+        <li v-if="toolSelected && tool.name === toolSelected.name && toolSelected.brushSize" :key="index * 1000" class="collection-item">
+          <div class="row">
+            <label for="brushSize" class="col s6">
+              Taille de pinceau
+            </label>
+            <p class="range-field col s6">
+              <input type="range" id="brushSize" :min="toolSelected.brushSize.min" :max="toolSelected.brushSize.max" v-model="toolSelected.brushSize.value"/>
+            </p>
+          </div>
         </li>
+
+        <li v-if="toolSelected && tool.name === toolSelected.name && toolSelected.config" :key="-index" class="collection-item">
+          <div class="container">
+
+            <article class="row" v-for="(value, item) in toolSelected.config" :key="item">
+              <div class="input-field col s12">
+                <input :id="item" type="text" class="validate" v-model="toolSelected.config[item]">
+                <label :for="item" class="active">{{item}}</label>
+              </div>
+            </article>
+
+          </div>
+        </li>
+
       </template>
     </ul>
   </section>
