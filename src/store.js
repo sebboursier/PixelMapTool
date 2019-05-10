@@ -42,9 +42,6 @@ export default new Vuex.Store({
     },
     setCaseSelected (state, caseSelected) {
       state.caseSelected = caseSelected
-    },
-    refreshMap (state) {
-      state.map = [...state.map]
     }
   },
   actions: {

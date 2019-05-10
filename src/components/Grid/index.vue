@@ -14,13 +14,16 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import _ from 'lodash'
+// import Vue from 'vue'
+import { normalize } from '@/utils/Lib'
 
 export default {
   name: 'grid',
   data () {
     return {
       mouseDown: false,
-      RECT_SIZE: 10
+      RECT_SIZE: 10,
+      oldCoords: null
     }
   },
   computed: {
@@ -35,11 +38,13 @@ export default {
     ]),
     viewBox () {
       return '0 0 ' + this.size * this.RECT_SIZE + ' ' + this.size * this.RECT_SIZE
+    },
+    clonedSelected () {
+      return _.cloneDeep(this.toolSelected)
     }
   },
   methods: {
     ...mapMutations([
-      'refreshMap',
       'setCaseSelected'
     ]),
     actionStart (event) {
@@ -48,20 +53,41 @@ export default {
     },
     actionEnd (event) {
       this.mouseDown = false
+      this.oldCoords = null
     },
     action (event) {
       const bound = this.$refs.grid.getBoundingClientRect()
-      const offsetX = event.clientX - bound.left
-      const offsetY = event.clientY - bound.top
-      const x = _.floor(offsetX / bound.width * this.size)
-      const y = _.floor(offsetY / bound.height * this.size)
+      const coords = {
+        x: event.clientX - bound.left,
+        y: event.clientY - bound.top
+      }
 
-      if (this.mouseDown && this.toolSelected) {
-        this.map[y][x] = _.cloneDeep(this.toolSelected)
-        this.refreshMap()
+      if (this.mouseDown && this.toolSelected && this.oldCoords) {
+        const difference = {
+          x: coords.x - this.oldCoords.x,
+          y: coords.y - this.oldCoords.y
+        }
+        let vector = normalize(difference, 1)
+        let iterations = 1
+        if (vector.x !== 0 && vector.y !== 0) {
+          iterations = difference.x / vector.x
+        }
+
+        for (let i = 0; i < iterations; i++) {
+          const x = _.floor((this.oldCoords.x + vector.x * i) / bound.width * this.size)
+          const y = _.floor((this.oldCoords.y + vector.y * i) / bound.height * this.size)
+          if (!_.isEqual(this.map[y][x], this.clonedSelected)) {
+            this.map[y].splice(x, 1, this.clonedSelected)
+            console.log('COUCOCUO')
+          }
+        }
       } else {
+        const x = _.floor(coords.x / bound.width * this.size)
+        const y = _.floor(coords.y / bound.height * this.size)
         this.setCaseSelected({ x: x, y: y })
       }
+
+      this.oldCoords = coords
     },
     transform (x, y) {
       return 'translate(' + (x * this.RECT_SIZE) + ' ' + (y * this.RECT_SIZE) + ')'
