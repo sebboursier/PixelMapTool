@@ -14,7 +14,6 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import _ from 'lodash'
-// import Vue from 'vue'
 import { normalize } from '@/utils/Lib'
 
 export default {
@@ -78,7 +77,6 @@ export default {
           const y = _.floor((this.oldCoords.y + vector.y * i) / bound.height * this.size)
           if (!_.isEqual(this.map[y][x], this.clonedSelected)) {
             this.map[y].splice(x, 1, this.clonedSelected)
-            console.log('COUCOCUO')
           }
         }
       } else {
