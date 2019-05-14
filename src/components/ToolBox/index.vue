@@ -15,7 +15,7 @@
         <li v-if="toolSelected && tool.name === toolSelected.name && toolSelected.brushSize" :key="index * 1000" class="collection-item">
           <div class="row">
             <label for="brushSize" class="col s6">
-              Taille de pinceau
+              Taille de pinceau : {{toolSelected.brushSize.value}}
             </label>
             <p class="range-field col s6">
               <input type="range" id="brushSize" :min="toolSelected.brushSize.min" :max="toolSelected.brushSize.max" v-model="toolSelected.brushSize.value"/>

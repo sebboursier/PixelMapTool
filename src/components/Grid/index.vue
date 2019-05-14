@@ -79,8 +79,20 @@ export default {
         for (let i = 0; i < iterations; i++) {
           const x = _.floor((this.oldCoords.x + vector.x * i) / bound.width * this.size)
           const y = _.floor((this.oldCoords.y + vector.y * i) / bound.height * this.size)
-          if (!_.isEqual(this.map[y][x], this.clonedSelected)) {
-            this.map[y].splice(x, 1, this.clonedSelected)
+
+          let brushSize = 1
+          if (this.toolSelected.brushSize) {
+            brushSize = this.toolSelected.brushSize.value
+          }
+
+          for (let offsetX = 1; offsetX <= brushSize; offsetX++) {
+            for (let offsetY = 1; offsetY <= brushSize; offsetY++) {
+              const targetX = x + Math.floor(offsetX - brushSize / 2)
+              const targetY = y - Math.floor(offsetY - brushSize / 2)
+              if (!_.isEqual(this.map[targetY][targetX], this.clonedSelected)) {
+                this.map[targetY].splice(targetX, 1, this.clonedSelected)
+              }
+            }
           }
         }
       } else {
