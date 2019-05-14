@@ -8,6 +8,9 @@
     <g v-for="(line, y) in map" :key="y">
       <use v-for="(data, x) in line" :key="x" :xlink:href="'#' + data.name" :transform="transform(x, y)"/>
     </g>
+
+    <links/>
+
   </svg>
 </template>
 
@@ -15,13 +18,16 @@
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import _ from 'lodash'
 import { normalize } from '@/utils/Lib'
+import Links from './links'
 
 export default {
   name: 'grid',
+  components: {
+    Links
+  },
   data () {
     return {
       mouseDown: false,
-      RECT_SIZE: 10,
       oldCoords: null
     }
   },
@@ -30,7 +36,9 @@ export default {
       'size',
       'map',
       'toolSelected',
-      'caseSelected'
+      'caseSelected',
+      'indexed',
+      'RECT_SIZE'
     ]),
     ...mapGetters([
       'tools'
@@ -90,7 +98,20 @@ export default {
               const targetX = x + Math.floor(offsetX - brushSize / 2)
               const targetY = y - Math.floor(offsetY - brushSize / 2)
               if (!_.isEqual(this.map[targetY][targetX], this.clonedSelected)) {
-                this.map[targetY].splice(targetX, 1, this.clonedSelected)
+                const removed = this.map[targetY].splice(targetX, 1, this.clonedSelected)
+
+                if (removed.name === 'Dwarf' || removed.name === 'TargetPoint') {
+                  _.remove(this.indexed, (indexed) => {
+                    return indexed.x === targetX && indexed.y === targetY
+                  })
+                }
+                if (this.clonedSelected.name === 'Dwarf' || this.clonedSelected.name === 'TargetPoint') {
+                  this.indexed.push({
+                    item: _.cloneDeep(this.clonedSelected),
+                    x: targetX,
+                    y: targetY
+                  })
+                }
               }
             }
           }
@@ -98,7 +119,9 @@ export default {
       } else {
         const x = _.floor(coords.x / bound.width * this.size)
         const y = _.floor(coords.y / bound.height * this.size)
-        this.setCaseSelected({ x: x, y: y })
+        if (!this.caseSelected || this.caseSelected.x !== x || this.caseSelected.y !== y) {
+          this.setCaseSelected({ x: x, y: y })
+        }
       }
 
       this.oldCoords = coords

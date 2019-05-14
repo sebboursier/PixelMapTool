@@ -28,7 +28,7 @@
 
             <article class="row" v-for="(value, item) in toolSelected.config" :key="item">
               <div class="input-field col s12">
-                <input :id="item" type="text" class="validate" v-model="toolSelected.config[item]">
+                <input :id="item" type="number" class="validate" v-model.number="toolSelected.config[item]">
                 <label :for="item" class="active">{{item}}</label>
               </div>
             </article>
