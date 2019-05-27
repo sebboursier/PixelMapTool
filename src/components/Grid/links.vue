@@ -35,18 +35,18 @@ export default {
 
       if (this.caseData) {
         let index = -1
-        if (this.caseData.name === 'Dwarf') {
+        if (this.caseData.n === 'Dwarf') {
           index = this.caseData.config.index
-        } else if (this.caseData.name === 'TargetPoint') {
+        } else if (this.caseData.n === 'TargetPoint') {
           index = this.caseData.config.dwarf
         }
 
         if (index >= 0) {
           let cursor = 0
-          let item = _.find(this.indexed, indexed => indexed.item.name === 'Dwarf' && indexed.item.config.index === index)
+          let item = _.find(this.indexed, indexed => indexed.item.n === 'Dwarf' && indexed.item.config.index === index)
 
           while (item) {
-            const nextItem = _.find(this.indexed, indexed => indexed.item.name === 'TargetPoint' && indexed.item.config.index === cursor && indexed.item.config.dwarf === index)
+            const nextItem = _.find(this.indexed, indexed => indexed.item.n === 'TargetPoint' && indexed.item.config.index === cursor && indexed.item.config.dwarf === index)
             if (nextItem) {
               this.links.push({
                 start: {

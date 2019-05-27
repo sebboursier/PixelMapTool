@@ -2,7 +2,7 @@
   <section class="card" v-if="caseData">
     <div class="card-content">
       <span class="card-title">
-        {{caseData.name}}
+        {{caseData.n}}
         <span class="badge">
           Survolé
         </span>
@@ -30,7 +30,7 @@ export default {
       'map'
     ]),
     caseData () {
-      if (this.caseSelected) {
+      if (this.caseSelected && this.map) {
         return this.map[this.caseSelected.y][this.caseSelected.x]
       }
       return null

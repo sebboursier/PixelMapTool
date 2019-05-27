@@ -2,11 +2,11 @@
   <svg preserveAspectRatio="xMinYMin meet" :viewBox="viewBox" @mousedown="actionStart" @mousemove="action" @mouseup="actionEnd" ref="grid">
 
     <defs>
-        <rect v-for="(tool, index) in tools" :key="index" :id="tool.name" :width="RECT_SIZE" :height="RECT_SIZE" :class="tool.name"/>
+        <rect v-for="(tool, index) in tools" :key="index" :id="tool.n" :width="RECT_SIZE" :height="RECT_SIZE" :class="tool.n"/>
     </defs>
 
     <g v-for="(line, y) in map" :key="y">
-      <use v-for="(data, x) in line" :key="x" :xlink:href="'#' + data.name" :transform="transform(x, y)"/>
+      <use v-for="(data, x) in line" :key="x" :xlink:href="'#' + data.n" :transform="transform(x, y)"/>
     </g>
 
     <links/>
@@ -49,7 +49,7 @@ export default {
     clonedSelected () {
       const cloned = _.cloneDeep(this.toolSelected)
       return {
-        name: cloned.name,
+        n: cloned.n,
         config: cloned.config
       }
     }
@@ -100,12 +100,18 @@ export default {
               if (!_.isEqual(this.map[targetY][targetX], this.clonedSelected)) {
                 const removed = this.map[targetY].splice(targetX, 1, this.clonedSelected)
 
-                if (removed.name === 'Dwarf' || removed.name === 'TargetPoint') {
-                  _.remove(this.indexed, (indexed) => {
-                    return indexed.x === targetX && indexed.y === targetY
+                if (!_.includes([ 'Void', 'Vox' ], removed.n)) {
+                  console.log(this.indexed)
+                  const coucou = _.remove(this.indexed, (indexed) => {
+                    const c = indexed.x === targetX && indexed.y === targetY
+                    if (c) {
+                      console.log('COUCOUCOUC')
+                    }
+                    return c
                   })
+                  console.log(coucou)
                 }
-                if (this.clonedSelected.name === 'Dwarf' || this.clonedSelected.name === 'TargetPoint') {
+                if (!_.includes([ 'Void', 'Vox' ], this.clonedSelected.n)) {
                   this.indexed.push({
                     item: _.cloneDeep(this.clonedSelected),
                     x: targetX,
@@ -154,7 +160,7 @@ export default {
   fill: #ffc107;
 }
 
-.Voxel {
+.Vox {
   fill: black;
 }
 

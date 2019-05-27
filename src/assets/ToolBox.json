@@ -1,33 +1,33 @@
 [
   {
-    "name": "PlayerStart"
+    "n": "PlayerStart"
   }, {
-    "name": "LevelExit"
+    "n": "LevelExit"
   }, {
-    "name": "Treasure",
+    "n": "Treasure",
     "config": {
       "index": 0
     }
   }, {
-    "name": "Dwarf",
+    "n": "Dwarf",
     "config": {
       "index": 0
     }
   }, {
-    "name": "TargetPoint",
+    "n": "TargetPoint",
     "config": {
       "dwarf": 0,
       "index": 0
     }
   }, {
-    "name": "Voxel",
+    "n": "Vox",
     "brushSize": {
       "min": 1,
       "max": 10,
       "value": 1
     }
   }, {
-    "name": "Void",
+    "n": "Void",
     "brushSize": {
       "min": 1,
       "max": 10,

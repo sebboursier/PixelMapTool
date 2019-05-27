@@ -8,11 +8,11 @@
     <ul class="card-image collection">
       <template v-for="(tool, index) in tools">
 
-        <li class="collection-item" :key="index" @click="setToolSelected(tool)" :class="toolSelected && tool.name === toolSelected.name ? 'active' : ''">
-          {{tool.name}}
+        <li class="collection-item" :key="index" @click="setToolSelected(tool)" :class="toolSelected && tool.n === toolSelected.n ? 'active' : ''">
+          {{tool.n}}
         </li>
 
-        <li v-if="toolSelected && tool.name === toolSelected.name && toolSelected.brushSize" :key="index * 1000" class="collection-item">
+        <li v-if="toolSelected && tool.n === toolSelected.n && toolSelected.brushSize" :key="index * 1000" class="collection-item">
           <div class="row">
             <label for="brushSize" class="col s6">
               Taille de pinceau : {{toolSelected.brushSize.value}}
@@ -23,7 +23,7 @@
           </div>
         </li>
 
-        <li v-if="toolSelected && tool.name === toolSelected.name && toolSelected.config" :key="-index" class="collection-item">
+        <li v-if="toolSelected && tool.n === toolSelected.n && toolSelected.config" :key="-index" class="collection-item">
           <div class="container">
 
             <article class="row" v-for="(value, item) in toolSelected.config" :key="item">
